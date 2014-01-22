@@ -5,11 +5,13 @@ import (
 	"net/http"
 )
 
-type Cookie struct{}
+type Cookie struct{
+	key string
+}
 
-func (self *Cookie) Get(key string, req *http.Request) (result string, err error) {
+func (self *Cookie) Get(req *http.Request) (result string, err error) {
 	for _, cookie := range req.Cookies() {
-		if cookie.Name == key {
+		if cookie.Name == self.key {
 			result = cookie.Value
 			break
 		}

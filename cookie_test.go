@@ -6,12 +6,12 @@ import (
 )
 
 func TestCookie(t *testing.T) {
-	identifier := &Cookie{}
-
 	{
+		identifier := &Cookie{key:"test"}
+
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
-		actual, err := identifier.Get("test", req)
+		actual, err := identifier.Get(req)
 		expected := "test"
 
 		if actual != expected {
@@ -24,9 +24,11 @@ func TestCookie(t *testing.T) {
 	}
 
 	{
+		identifier := &Cookie{key:"invalid key"}
+
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
-		actual, err := identifier.Get("invalid key", req)
+		actual, err := identifier.Get(req)
 		expected := ""
 
 		if actual != expected {

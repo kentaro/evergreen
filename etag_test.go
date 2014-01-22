@@ -10,7 +10,7 @@ func TestETag(t *testing.T) {
 	{
 		req := newRequest()
 		req.Header.Set("If-None-Match", "test")
-		actual, err := identifier.Get("test", req)
+		actual, err := identifier.Get(req)
 		expected := "test"
 
 		if actual != expected {
@@ -24,7 +24,7 @@ func TestETag(t *testing.T) {
 
 	{
 		req := newRequest()
-		actual, err := identifier.Get("invalid key", req)
+		actual, err := identifier.Get(req)
 		expected := ""
 
 		if actual != expected {
