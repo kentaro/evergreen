@@ -1,10 +1,11 @@
 package evergreen
 
 import (
+	"net/http/httptest"
 	"testing"
 )
 
-func TestETag(t *testing.T) {
+func TestETagGet(t *testing.T) {
 	identifier := &ETag{}
 
 	{
@@ -34,5 +35,19 @@ func TestETag(t *testing.T) {
 		if err.Error() != "Identity not found in ETag" {
 			t.Errorf("Error message is not set correctly")
 		}
+	}
+}
+
+func TestETagSet(t *testing.T) {
+	identifier := &ETag{}
+
+	writer := httptest.NewRecorder()
+	identifier.Set(writer, "test")
+
+	actual := writer.Header().Get("ETag")
+	expected := "test"
+
+	if actual != expected {
+		t.Errorf("Cookie not set correctly")
 	}
 }

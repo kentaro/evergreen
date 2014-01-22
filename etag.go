@@ -16,3 +16,8 @@ func (self *ETag) Get(req *http.Request) (result string, err error) {
 
 	return
 }
+
+func (self *ETag) Set(writer http.ResponseWriter, value string) {
+	writer.Header().Set("ETag", value)
+	return
+}
