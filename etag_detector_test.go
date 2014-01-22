@@ -1,16 +1,15 @@
 package evergreen
 
 import (
-	"net/http"
 	"testing"
 )
 
-func TestCookieDetector(t *testing.T) {
-	detector := &CookieDetector{}
+func TestETagDetector(t *testing.T) {
+	detector := &ETagDetector{}
 
 	{
 		req := newRequest()
-		req.AddCookie(&http.Cookie{Name:"test", Value:"test"})
+		req.Header.Set("If-None-Match", "test")
 		actual, err := detector.Detect("test", req)
 		expected := "test"
 
@@ -25,7 +24,6 @@ func TestCookieDetector(t *testing.T) {
 
 	{
 		req := newRequest()
-		req.AddCookie(&http.Cookie{Name:"test", Value:"test"})
 		actual, err := detector.Detect("invalid key", req)
 		expected := ""
 
@@ -33,7 +31,7 @@ func TestCookieDetector(t *testing.T) {
 			t.Errorf("Invalid return value")
 		}
 
-		if err.Error() != "Identity not found in cookie" {
+		if err.Error() != "Identity not found in ETag" {
 			t.Errorf("Error message is not set correctly")
 		}
 	}
