@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-type CookieDetector struct{}
+type Cookie struct{}
 
-func (self *CookieDetector) Detect(key string, req *http.Request) (result string, err error) {
+func (self *Cookie) Get(key string, req *http.Request) (result string, err error) {
 	for _, cookie := range req.Cookies() {
 		if cookie.Name == key {
 			result = cookie.Value

@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-type ETagDetector struct{}
+type ETag struct{}
 
-func (self *ETagDetector) Detect(key string, req *http.Request) (result string, err error) {
+func (self *ETag) Get(key string, req *http.Request) (result string, err error) {
 	result = req.Header.Get("If-None-Match")
 
 	if result == "" {
