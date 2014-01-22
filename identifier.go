@@ -6,5 +6,5 @@ import (
 
 type Identifier interface {
 	Get(req *http.Request)
-	Set(res *http.ResponseWriter)
+	Set(res http.ResponseWriter, value string)
 }
