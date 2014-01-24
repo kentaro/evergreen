@@ -35,6 +35,10 @@ func (self *Server) Run(options map[string]string) {
 		for _, identity := range identifiers {
 			identity.Set(writer, value)
 		}
+
+		writer.Header().Set("Content-Type", "image/gif")
+		writer.Header().Set("Content-Length", "43")
+		writer.Write(newEmptyGif())
 	})
 
 	log.Fatal(http.ListenAndServe(":" + options["port"], nil))
