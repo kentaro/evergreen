@@ -9,6 +9,7 @@ type Server struct {}
 
 func (self *Server) Run(options map[string]string) {
 	identifiers := []Identifier{&Cookie{key:options["cookie_key"]}, &ETag{}}
+	emptyGif := &EmptyGif{}
 
 	http.HandleFunc("/", func(writer http.ResponseWriter, req *http.Request) {
 		var value string
@@ -36,9 +37,7 @@ func (self *Server) Run(options map[string]string) {
 			identity.Set(writer, value)
 		}
 
-		writer.Header().Set("Content-Type", "image/gif")
-		writer.Header().Set("Content-Length", "43")
-		writer.Write(newEmptyGif())
+		emptyGif.Set(writer)
 	})
 
 	log.Fatal(http.ListenAndServe(":" + options["port"], nil))
