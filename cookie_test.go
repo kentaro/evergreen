@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 func TestCookieGet(t *testing.T) {
@@ -47,6 +48,7 @@ func TestCookieGet(t *testing.T) {
 func TestCookieSet(t *testing.T) {
 	identifier := &Cookie{key:"test"}
 
+	expires, _ := time.Parse("Mon, 2 Jan 2006 15:04:05 MST", "Tue, 31 Dec 2030 23:30:45 GMT")
 	writer := httptest.NewRecorder()
 	identifier.Set(writer, "test")
 
@@ -54,7 +56,7 @@ func TestCookieSet(t *testing.T) {
 	expected := (&http.Cookie{
 		Name: "test",
 		Value: "test",
-		RawExpires: "Tue, 31 Dec 2030 23:30:45 GMT",
+		Expires: expires,
 		MaxAge: 630720000,
 	}).String()
 
