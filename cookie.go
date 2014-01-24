@@ -3,6 +3,7 @@ package evergreen
 import (
 	"errors"
 	"net/http"
+	"time"
 )
 
 type Cookie struct {
@@ -24,12 +25,14 @@ func (self *Cookie) Get(req *http.Request) (result string, err error) {
 	return
 }
 
+var expires, _ = time.Parse("Mon, 2 Jan 2006 15:04:05 MST", "Tue, 31 Dec 2030 23:30:45 GMT")
+
 func (self *Cookie) Set(writer http.ResponseWriter, value string) {
 	cookie := http.Cookie{
-		Name:       self.key,
-		Value:      value,
-		RawExpires: "Tue, 31 Dec 2030 23:30:45 GMT",
-		MaxAge:     630720000,
+		Name:    self.key,
+		Value:   value,
+		Expires: expires,
+		MaxAge:  630720000,
 	}
 	writer.Header().Set("Set-Cookie", cookie.String())
 
