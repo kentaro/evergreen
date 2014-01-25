@@ -8,15 +8,15 @@ import (
 type Server struct {}
 
 func (self *Server) Run(options map[string]string) {
-	identifiers := []Identifier{&Cookie{key:options["cookie_key"]}, &ETag{}}
+	storages := []Storage{&Cookie{key:options["cookie_key"]}, &ETag{}}
 	header := &Header{}
 	emptyGif := &EmptyGif{}
 
 	http.HandleFunc("/", func(writer http.ResponseWriter, req *http.Request) {
 		var value string
 
-		for _, identity := range identifiers {
-			result, err := identity.Get(req)
+		for _, storage := range storages {
+			result, err := storage.Get(req)
 
 			if err == nil {
 				value = result
@@ -34,8 +34,8 @@ func (self *Server) Run(options map[string]string) {
 			value = uuid
 		}
 
-		for _, identity := range identifiers {
-			identity.Set(writer, value)
+		for _, storage := range storages {
+			storage.Set(writer, value)
 		}
 
 		header.Set(writer, value)
