@@ -6,12 +6,12 @@ import (
 )
 
 func TestETagGet(t *testing.T) {
-	identifier := &ETag{}
+	storage := &ETag{}
 
 	{
 		req := newRequest()
 		req.Header.Set("If-None-Match", "test")
-		actual, err := identifier.Get(req)
+		actual, err := storage.Get(req)
 		expected := "test"
 
 		if actual != expected {
@@ -25,7 +25,7 @@ func TestETagGet(t *testing.T) {
 
 	{
 		req := newRequest()
-		actual, err := identifier.Get(req)
+		actual, err := storage.Get(req)
 		expected := ""
 
 		if actual != expected {
@@ -39,10 +39,10 @@ func TestETagGet(t *testing.T) {
 }
 
 func TestETagSet(t *testing.T) {
-	identifier := &ETag{}
+	storage := &ETag{}
 
 	writer := httptest.NewRecorder()
-	identifier.Set(writer, "test")
+	storage.Set(writer, "test")
 
 	actual := writer.Header().Get("ETag")
 	expected := "test"

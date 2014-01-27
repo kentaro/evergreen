@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-type Identifier interface {
+type Storage interface {
 	Get(req *http.Request) (result string, err error)
 	Set(writer http.ResponseWriter, value string)
 }

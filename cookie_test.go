@@ -9,12 +9,12 @@ import (
 
 func TestCookieGet(t *testing.T) {
 	{
-		identifier := &Cookie{key:"test"}
+		storage := &Cookie{key:"test"}
 
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
 
-		actual, err := identifier.Get(req)
+		actual, err := storage.Get(req)
 		expected := "test"
 
 		if actual != expected {
@@ -27,12 +27,12 @@ func TestCookieGet(t *testing.T) {
 	}
 
 	{
-		identifier := &Cookie{key:"invalid key"}
+		storage := &Cookie{key:"invalid key"}
 
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
 
-		actual, err := identifier.Get(req)
+		actual, err := storage.Get(req)
 		expected := ""
 
 		if actual != expected {
@@ -46,11 +46,11 @@ func TestCookieGet(t *testing.T) {
 }
 
 func TestCookieSet(t *testing.T) {
-	identifier := &Cookie{key:"test"}
+	storage := &Cookie{key:"test"}
 
 	expires, _ := time.Parse("Mon, 2 Jan 2006 15:04:05 MST", "Tue, 31 Dec 2030 23:30:45 GMT")
 	writer := httptest.NewRecorder()
-	identifier.Set(writer, "test")
+	storage.Set(writer, "test")
 
 	actual := writer.Header().Get("Set-Cookie")
 	expected := (&http.Cookie{
