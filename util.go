@@ -3,6 +3,8 @@ package evergreen
 import (
 	"github.com/nu7hatch/gouuid"
 	"log"
+	"net/http"
+	"strings"
 )
 
 func newUuid() (result string, err error) {
@@ -16,3 +18,7 @@ func newUuid() (result string, err error) {
 	return
 }
 
+func newRequest() (req *http.Request) {
+	req, _ = http.NewRequest("GET", "/test", strings.NewReader("test"))
+	return
+}
