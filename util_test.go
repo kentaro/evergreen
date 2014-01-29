@@ -8,7 +8,7 @@ import (
 
 func TestNewUuid(t *testing.T) {
 	actual, _ := newUuid()
-	expected := regexp.MustCompile("[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+")
+	expected := regexp.MustCompile("^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+$")
 
 	if !expected.MatchString(actual) {
 		t.Errorf("UUID generation error")

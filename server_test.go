@@ -20,7 +20,7 @@ func TestServerRun(t *testing.T) {
 	time.Sleep(1 * time.Second) // XXX
 
 	res, _ := http.Get("http://127.0.0.1:" + port)
-	etagRegexp := regexp.MustCompile("[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+")
+	etagRegexp := regexp.MustCompile("^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+$")
 
 	{
 		actual := res.StatusCode
