@@ -2,9 +2,8 @@ package evergreen
 
 import (
 	"bytes"
-	"fmt"
+	"github.com/lestrrat/go-tcputil"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -13,13 +12,22 @@ import (
 )
 
 func TestServerRun(t *testing.T) {
-	port := strconv.Itoa(emptyPort())
+	port, err := tcputil.EmptyPort()
+
+	if err != nil {
+		t.Errorf("Failed to get an empty port: %v", err)
+	}
+
 	server := &Server{}
+	go server.Run(map[string]string{"cookie_key": "test", "port": strconv.Itoa(port)})
 
-	go server.Run(map[string]string{"cookie_key": "test", "port": port})
-	time.Sleep(1 * time.Second) // XXX
+	err = tcputil.WaitLocalPort(port, 10 * time.Second)
 
-	res, _ := http.Get("http://127.0.0.1:" + port)
+	if err != nil {
+		t.Errorf("Failed to listen to the port %d: %v", err)
+	}
+
+	res, _ := http.Get("http://127.0.0.1:" + strconv.Itoa(port))
 	etagRegexp := regexp.MustCompile("^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+$")
 
 	{
@@ -72,16 +80,4 @@ func TestServerRun(t *testing.T) {
 			t.Errorf("Response body error")
 		}
 	}
-}
-
-func emptyPort() int {
-	for port := 10000; port < 20000; port++ {
-		addr := fmt.Sprintf("localhost:%d", port)
-		l, err := net.Listen("tcp", addr)
-		if err == nil {
-			defer l.Close()
-			return port
-		}
-	}
-	panic("can't listen empty port")
 }
