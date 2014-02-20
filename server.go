@@ -8,7 +8,7 @@ import (
 type Server struct {}
 
 func (self *Server) Run(options map[string]string) {
-	storages := []Storage{&Cookie{key:options["cookie_key"]}, &ETag{}}
+	storages := []Storage{&Cookie{Key:options["cookie_key"]}, &ETag{}}
 	header := &Header{}
 	emptyGif := &EmptyGif{}
 

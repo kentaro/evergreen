@@ -9,7 +9,7 @@ import (
 
 func TestCookieGet(t *testing.T) {
 	{
-		storage := &Cookie{key:"test"}
+		storage := &Cookie{Key:"test"}
 
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
@@ -27,7 +27,7 @@ func TestCookieGet(t *testing.T) {
 	}
 
 	{
-		storage := &Cookie{key:"invalid key"}
+		storage := &Cookie{Key:"invalid key"}
 
 		req := newRequest()
 		req.AddCookie(&http.Cookie{Name: "test", Value: "test"})
@@ -46,7 +46,7 @@ func TestCookieGet(t *testing.T) {
 }
 
 func TestCookieSet(t *testing.T) {
-	storage := &Cookie{key:"test"}
+	storage := &Cookie{Key:"test"}
 
 	expires, _ := time.Parse("Mon, 2 Jan 2006 15:04:05 MST", "Tue, 31 Dec 2030 23:30:45 GMT")
 	writer := httptest.NewRecorder()
